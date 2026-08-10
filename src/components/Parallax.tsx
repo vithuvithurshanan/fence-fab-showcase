@@ -26,7 +26,9 @@ export function ParallaxSection({
       const layer = layerRef.current;
       if (!el || !layer) return;
       const rect = el.getBoundingClientRect();
-      const offset = (rect.top + rect.height / 2 - window.innerHeight / 2) * speed;
+      const raw = (rect.top + rect.height / 2 - window.innerHeight / 2) * speed;
+      const limit = rect.height * 0.28;
+      const offset = Math.max(-limit, Math.min(limit, raw));
       layer.style.setProperty("--parallax-y", `${offset.toFixed(2)}px`);
     };
     const onScroll = () => {
