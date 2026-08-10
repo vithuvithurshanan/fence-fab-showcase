@@ -229,7 +229,7 @@ function Index() {
       </section>
 
       {/* CTA */}
-      <ParallaxSection id-quote image={woodImg} speed={0.18} className="px-6 py-28">
+      <ParallaxSection image={woodImg} speed={0.18} className="px-6 py-28">
         <div id="quote" className="mx-auto max-w-2xl text-center">
           <Reveal>
             <h2 className="text-4xl font-bold tracking-tight text-on-image">
