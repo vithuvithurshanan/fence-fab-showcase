@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection, Reveal } from "@/components/Parallax";
@@ -12,6 +13,9 @@ import {
   Wallet,
   Mail,
   MapPin,
+  Send,
+  CheckCircle2,
+  Clock,
 } from "lucide-react";
 import heroFence from "@/assets/hero-fence.jpg";
 import crewImg from "@/assets/parallax-crew.jpg";
@@ -112,7 +116,121 @@ const promises = [
   { icon: Wallet, title: "Honest pricing", copy: "Per-foot pricing with no surprise line items." },
   { icon: Timer, title: "On schedule", copy: "We show up on the day we promised. Every time." },
   { icon: Truck, title: "Own crews", copy: "No subcontractors — our installers, our standards." },
-];
+];function ContactForm() {
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    fenceType: "Wood Privacy",
+    message: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className="flex min-h-[380px] flex-col items-center justify-center text-center p-6">
+        <div className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <CheckCircle2 className="size-10" />
+        </div>
+        <h3 className="mt-4 text-2xl font-bold">Estimate Request Sent!</h3>
+        <p className="mt-2 max-w-md text-sm text-muted-foreground">
+          Thank you, {formData.name || "Customer"}! We have received your request for a {formData.fenceType} fence. Our team will contact you within 24 hours with a custom estimate.
+        </p>
+        <button
+          onClick={() => {
+            setSubmitted(false);
+            setFormData({ name: "", email: "", phone: "", fenceType: "Wood Privacy", message: "" });
+          }}
+          className="mt-6 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          Send Another Request
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className="block text-sm font-medium text-foreground">Your Name *</label>
+          <input
+            type="text"
+            required
+            placeholder="John Doe"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-foreground">Phone Number *</label>
+          <input
+            type="tel"
+            required
+            placeholder="(555) 000-0000"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label className="block text-sm font-medium text-foreground">Email Address *</label>
+          <input
+            type="email"
+            required
+            placeholder="john@example.com"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            className="mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-foreground">Fence Type</label>
+          <select
+            value={formData.fenceType}
+            onChange={(e) => setFormData({ ...formData, fenceType: e.target.value })}
+            className="mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            <option value="Wood Privacy">Wood Privacy Fence</option>
+            <option value="Vinyl">Vinyl Fence</option>
+            <option value="Aluminum">Aluminum & Ornamental</option>
+            <option value="Chain Link">Chain Link Fence</option>
+            <option value="Commercial">Commercial Fencing</option>
+            <option value="Railings">Railings & Gates</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-foreground">Project Details / Approximate Footage</label>
+        <textarea
+          rows={4}
+          placeholder="Tell us about your fence length, property type, or any special requests..."
+          value={formData.message}
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          className="mt-1.5 w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90"
+      >
+        <Send className="size-4" />
+        Submit Estimate Request
+      </button>
+    </form>
+  );
+}
 
 function Index() {
   return (
@@ -143,7 +261,7 @@ function Index() {
           <Reveal delay={300}>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
               <Button variant="hero" size="xl" asChild>
-                <a href="#quote">Get a free estimate</a>
+                <a href="#contact">Get a free estimate</a>
               </Button>
               <Button variant="onImage" size="xl" asChild>
                 <a href="#services">See fence types</a>
@@ -253,8 +371,6 @@ function Index() {
         </div>
       </section>
 
-
-
       {/* Parallax break */}
       <ParallaxSection image={crewImg} speed={0.2} className="px-6 py-32">
         <div className="mx-auto max-w-3xl text-center">
@@ -271,7 +387,7 @@ function Index() {
       </ParallaxSection>
 
       {/* Process */}
-      <section className="mx-auto max-w-6xl px-6 py-24">
+      <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-24">
         <Reveal>
           <h2 className="text-center text-4xl font-bold tracking-tight">How it works</h2>
         </Reveal>
@@ -308,6 +424,134 @@ function Index() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="mx-auto max-w-4xl px-6 py-24">
+        <Reveal>
+          <p className="text-center text-sm font-semibold tracking-[0.2em] text-accent uppercase">
+            Got Questions?
+          </p>
+          <h2 className="mt-3 text-center text-4xl font-bold tracking-tight">
+            Frequently Asked Questions
+          </h2>
+        </Reveal>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+          {[
+            {
+              q: "How fast can you install a fence?",
+              a: "Most residential fences take 1–2 days once posts are set in concrete.",
+            },
+            {
+              q: "Do you offer free on-site estimates?",
+              a: "Yes! We measure your property line and provide a clear written quote within 24 hours.",
+            },
+            {
+              q: "What warranty do you provide?",
+              a: "We back every installation with a written 10-year workmanship warranty.",
+            },
+            {
+              q: "Do you handle HOA approvals and permits?",
+              a: "Yes, we help with permit filings and offer HOA-compliant fence designs.",
+            },
+          ].map((faq, i) => (
+            <Reveal key={faq.q} delay={i * 80}>
+              <div className="h-full rounded-xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
+                <h3 className="font-semibold text-foreground">{faq.q}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{faq.a}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="bg-secondary/40 py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal>
+            <p className="text-center text-sm font-semibold tracking-[0.2em] text-accent uppercase">
+              Get in Touch
+            </p>
+            <h2 className="mt-3 text-center text-4xl font-bold tracking-tight">
+              Request Your Free Estimate
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground">
+              Fill out the form below and our team will get back to you within 24 hours with a custom quote.
+            </p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-12">
+            {/* Contact Info */}
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-6 rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
+              <div>
+                <h3 className="text-2xl font-bold tracking-tight">Contact Information</h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Have questions about your project or need an urgent estimate? Reach out to us directly.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Phone className="size-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Phone</h4>
+                    <a href="tel:+18005553362" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      (800) 555-FENCE / (800) 555-3362
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Mail className="size-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Email</h4>
+                    <a href="mailto:quotes@affordablefence.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      quotes@affordablefence.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <MapPin className="size-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Service Area</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Serving all surrounding tri-county areas &amp; residential neighborhoods.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Clock className="size-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">Working Hours</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Mon – Sat: 7:00 AM – 6:00 PM
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-accent/10 border border-accent/20 p-4 text-xs font-medium text-accent flex items-center gap-2">
+                <ShieldCheck className="size-4 shrink-0" />
+                Licensed, Bonded &amp; Insured · 10-Year Warranty
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="lg:col-span-7 rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
+              <ContactForm />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <ParallaxSection image={woodImg} speed={0.18} className="px-6 py-28">
         <div id="quote" className="mx-auto max-w-2xl text-center">
@@ -325,8 +569,8 @@ function Index() {
                 </a>
               </Button>
               <Button variant="onImage" size="xl" asChild>
-                <a href="mailto:quotes@affordablefence.com">
-                  <Mail /> Email us
+                <a href="#contact">
+                  <Mail /> Fill Out Estimate Form
                 </a>
               </Button>
             </div>
