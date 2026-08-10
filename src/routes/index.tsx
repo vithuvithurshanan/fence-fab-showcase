@@ -73,6 +73,34 @@ const services = [
   },
 ];
 
+const fencingTypes = [
+  {
+    title: "Residential Fence",
+    image: residentialImg,
+    copy: "Durable residential fences that enhance security and keep your family and pets safe.",
+    points: ["Privacy & picket styles", "Pet-safe gates", "HOA-friendly designs"],
+  },
+  {
+    title: "Commercial Fence",
+    image: commercialImg,
+    copy: "Protect your commercial property from theft and trespassers with well-built, tasteful fencing.",
+    points: ["Adequate height & barbed wire", "Heavy-duty materials", "Custom access gates"],
+  },
+  {
+    title: "DIY Fencing",
+    image: diyImg,
+    copy: "Top-quality gates, hardware, posts and concrete so you can install your own fence with ease.",
+    points: ["Materials by the panel", "Hardware & concrete", "Install guidance included"],
+  },
+  {
+    title: "Railings",
+    image: railingImg,
+    copy: "High-quality railings built to your requirements and installed wherever you need them.",
+    points: ["Porch & step railings", "Aluminum and wrought iron", "Code-compliant heights"],
+  },
+];
+
+
 const steps = [
   { icon: Phone, title: "Call or request", copy: "Tell us the property line and what you need." },
   { icon: Ruler, title: "Free measure", copy: "We measure on site and quote the same day." },
