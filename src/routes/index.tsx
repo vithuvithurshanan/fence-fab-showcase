@@ -19,6 +19,10 @@ import woodImg from "@/assets/hero-fence.jpg";
 import aluminumImg from "@/assets/fence-aluminum.jpg";
 import vinylImg from "@/assets/fence-vinyl.jpg";
 import chainlinkImg from "@/assets/fence-chainlink.jpg";
+import residentialImg from "@/assets/service-residential.jpg";
+import commercialImg from "@/assets/service-commercial.jpg";
+import diyImg from "@/assets/service-diy.jpg";
+import railingImg from "@/assets/service-railing.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
