@@ -47,7 +47,7 @@ export function ParallaxSection({
       <div
         ref={layerRef}
         aria-hidden="true"
-        className="parallax-layer absolute inset-0 -z-10 bg-cover bg-center"
+        className="parallax-layer absolute inset-x-0 -top-[30%] -bottom-[30%] -z-10 bg-cover bg-center"
         style={{ backgroundImage: `url(${image})` }}
       />
       <div
