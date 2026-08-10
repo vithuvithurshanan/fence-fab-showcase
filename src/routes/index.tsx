@@ -207,6 +207,54 @@ function Index() {
         </div>
       </section>
 
+      {/* Fencing types / services */}
+      <section id="services-offered" className="bg-secondary/40 py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <Reveal>
+            <p className="text-sm font-semibold tracking-[0.2em] text-accent uppercase">
+              Our services
+            </p>
+            <h2 className="mt-3 max-w-2xl text-4xl font-bold tracking-tight">
+              Residential, commercial, DIY and railings
+            </h2>
+            <p className="mt-4 max-w-2xl text-muted-foreground">
+              Full-service fence installation for homes and businesses — plus materials if you would
+              rather build it yourself.
+            </p>
+          </Reveal>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {fencingTypes.map((t, i) => (
+              <Reveal key={t.title} delay={i * 100}>
+                <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-card)] transition-transform duration-300 hover:-translate-y-1">
+                  <img
+                    src={t.image}
+                    alt={`${t.title} installation by Affordable Fence`}
+                    loading="lazy"
+                    width={1024}
+                    height={768}
+                    className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-lg font-semibold">{t.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{t.copy}</p>
+                    <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
+                      {t.points.map((p) => (
+                        <li key={p} className="flex items-start gap-2">
+                          <ShieldCheck className="mt-0.5 size-4 shrink-0 text-primary" />
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
       {/* Parallax break */}
       <ParallaxSection image={crewImg} speed={0.2} className="px-6 py-32">
         <div className="mx-auto max-w-3xl text-center">
