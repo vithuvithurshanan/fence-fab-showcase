@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Fence, Phone, Menu, X } from "lucide-react";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Fence Types", href: "#services" },
   { label: "Services", href: "#services-offered" },
   { label: "How It Works", href: "#how-it-works" },
@@ -222,7 +223,7 @@ export function Navbar() {
 
             {/* CTA button — white bg, black text, Apple icon, exactly like Supaste "Download" */}
             <a
-              href="tel:+18005553362"
+              href="tel:+13158563323"
               className="hidden md:flex"
               style={{
                 display: "flex",
@@ -354,7 +355,7 @@ export function Navbar() {
             }}
           >
             <a
-              href="tel:+18005553362"
+              href="tel:+13158563323"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -369,7 +370,7 @@ export function Navbar() {
               }}
             >
               <Phone style={{ width: 16, height: 16, flexShrink: 0 }} />
-              (800) 555-FENCE
+              (315) 856-3323
             </a>
           </div>
         </div>
