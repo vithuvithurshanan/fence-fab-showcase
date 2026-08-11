@@ -24,6 +24,7 @@ import residentialImg from "@/assets/service-residential.jpg";
 import commercialImg from "@/assets/service-commercial.jpg";
 import diyImg from "@/assets/service-diy.jpg";
 import railingImg from "@/assets/service-railing.jpg";
+import contactImg from "@/assets/contact.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -42,6 +43,10 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      // Preload the hero image so LCP starts as early as possible
+      { rel: "preload", href: heroFence, as: "image", fetchPriority: "high" },
     ],
   }),
   component: Index,
@@ -231,8 +236,10 @@ function Index() {
                     src={s.image}
                     alt={`${s.title} installed by Affordable Fence`}
                     loading="lazy"
+                    decoding="async"
                     width={1024}
                     height={768}
+                    sizes="(max-width: 640px) 100vw, 50vw"
                     className="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
@@ -272,8 +279,10 @@ function Index() {
                     src={t.image}
                     alt={`${t.title} installation by Affordable Fence`}
                     loading="lazy"
+                    decoding="async"
                     width={1024}
                     height={768}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="h-44 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="flex flex-1 flex-col p-6">
@@ -404,15 +413,25 @@ function Index() {
 
           <div className="mt-12 grid gap-8 lg:grid-cols-12">
             {/* Contact Info */}
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-6 rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
-              <div>
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-6 rounded-2xl border border-border bg-card overflow-hidden shadow-[var(--shadow-card)]">
+              {/* Contact image */}
+              <div className="overflow-hidden">
+                <img
+                  src={contactImg}
+                  alt="Affordable Fence team at work"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+              <div className="px-8">
                 <h3 className="text-2xl font-bold tracking-tight">Contact Information</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Have questions about your project or need an urgent estimate? Reach out to us directly.
                 </p>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-6 px-8">
                 <div className="flex items-start gap-4">
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Phone className="size-5" />
@@ -462,7 +481,7 @@ function Index() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-accent/10 border border-accent/20 p-4 text-xs font-medium text-accent flex items-center gap-2">
+              <div className="rounded-xl bg-accent/10 border border-accent/20 p-4 mx-8 mb-8 text-xs font-medium text-accent flex items-center gap-2">
                 <ShieldCheck className="size-4 shrink-0" />
                 Licensed, Bonded &amp; Insured · 10-Year Warranty
               </div>

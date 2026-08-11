@@ -309,7 +309,6 @@ export function Navbar() {
                 cursor: "pointer",
                 color: "rgba(255,255,255,0.6)",
                 padding: 4,
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
