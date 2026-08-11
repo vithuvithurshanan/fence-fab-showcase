@@ -37,7 +37,7 @@ function Section({
 
 function TermsPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground px-6 pb-20 pt-28">
+    <main className="min-h-screen bg-background text-foreground px-4 pb-20 pt-24 sm:px-6 sm:pt-28">
       <div className="mx-auto max-w-3xl">
         <Link
           to="/"
@@ -46,7 +46,7 @@ function TermsPage() {
           <ArrowLeft className="size-4" /> Back to Home
         </Link>
 
-        <div className="rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)] md:p-12">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)] sm:p-8 md:p-12">
           {/* Header */}
           <div className="mb-8 space-y-2">
             <span className="flex items-center gap-2 text-lg font-bold text-foreground">

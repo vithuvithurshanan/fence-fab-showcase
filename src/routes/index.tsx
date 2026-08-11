@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import heroFence from "@/assets/hero-fence.jpg";
 import crewImg from "@/assets/parallax-crew.jpg";
-import woodImg from "@/assets/hero-fence.jpg";
 import aluminumImg from "@/assets/fence-aluminum.jpg";
 import vinylImg from "@/assets/fence-vinyl.jpg";
 import chainlinkImg from "@/assets/fence-chainlink.jpg";
@@ -51,7 +50,7 @@ export const Route = createFileRoute("/")({
 const services = [
   {
     title: "Wood Privacy Fence",
-    image: woodImg,
+    image: heroFence,
     copy: "Cedar and pressure-treated panels built to stand straight for decades.",
     price: "from $28 / ft",
   },
@@ -115,33 +114,7 @@ const promises = [
   { icon: Timer, title: "On schedule", copy: "We show up on the day we promised. Every time." },
   { icon: Truck, title: "Own crews", copy: "No subcontractors — our installers, our standards." },
 ];function ContactForm() {
-  return (
-    <div className="w-full">
-      <iframe
-        src="https://link.kdlead.com/widget/form/Kh1FyIs2j9geLQbuwWxd"
-        style={{ width: "100%", height: "904px", border: "none", borderRadius: "8px" }}
-        id="inline-Kh1FyIs2j9geLQbuwWxd"
-        data-layout="{'id':'INLINE'}"
-        data-trigger-type="alwaysShow"
-        data-trigger-value=""
-        data-activation-type="alwaysActivated"
-        data-activation-value=""
-        data-deactivation-type="neverDeactivate"
-        data-deactivation-value=""
-        data-form-name="Affordable Fence"
-        data-height="904"
-        data-layout-iframe-id="inline-Kh1FyIs2j9geLQbuwWxd"
-        data-form-id="Kh1FyIs2j9geLQbuwWxd"
-        title="Affordable Fence"
-      />
-      <script src="https://link.kdlead.com/js/form_embed.js" />
-    </div>
-  );
-}
-
-function EstimateForm() {
   useEffect(() => {
-    // Remove old script if present, then re-inject so GHL re-scans the iframe
     const existing = document.querySelector(
       'script[src="https://link.kdlead.com/js/form_embed.js"]'
     );
@@ -153,18 +126,18 @@ function EstimateForm() {
     document.body.appendChild(script);
 
     return () => {
-      script.remove();
+      const s = document.querySelector(
+        'script[src="https://link.kdlead.com/js/form_embed.js"]'
+      );
+      if (s) s.remove();
     };
   }, []);
 
   return (
-    <div
-      className="mt-10 rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] overflow-hidden"
-      style={{ height: "904px" }}
-    >
+    <div className="w-full rounded-xl bg-background p-4">
       <iframe
         src="https://link.kdlead.com/widget/form/Kh1FyIs2j9geLQbuwWxd"
-        style={{ width: "100%", height: "100%", border: "none", borderRadius: "8px" }}
+        style={{ width: "100%", height: "904px", border: "none", borderRadius: "8px" }}
         id="inline-Kh1FyIs2j9geLQbuwWxd"
         data-layout="{'id':'INLINE'}"
         data-trigger-type="alwaysShow"
@@ -504,7 +477,7 @@ function Index() {
       </section>
 
       {/* CTA */}
-      <ParallaxSection image={woodImg} speed={0.18} className="px-6 py-28">
+      <ParallaxSection image={heroFence} speed={0.18} className="px-6 py-28">
         <div id="quote" className="mx-auto max-w-2xl text-center">
           <Reveal>
             <h2 className="text-4xl font-bold tracking-tight text-on-image">

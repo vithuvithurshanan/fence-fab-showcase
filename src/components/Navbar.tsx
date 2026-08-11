@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+import { useRouterState } from "@tanstack/react-router";
 import { Fence, Phone, Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Fence Types", href: "#services" },
-  { label: "Services", href: "#services-offered" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Fence Types", href: "/#services" },
+  { label: "Services", href: "/#services-offered" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 // Exact Supaste corner SVG — fills the gap between pill and viewport top
@@ -63,29 +64,58 @@ function CornerRight() {
   );
 }
 
-// Apple-logo style SVG (matches Supaste's button icon)
-function AppleIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 12.054 14.923"
-      style={{ width: 12, height: 15, flexShrink: 0 }}
-      fill="rgb(0,0,0)"
-    >
-      <path d="M 11.669 5.088 C 11.583 5.155 10.067 6.016 10.067 7.931 C 10.067 10.146 11.996 10.93 12.054 10.949 C 12.045 10.997 11.747 12.022 11.036 13.067 C 10.403 13.986 9.741 14.904 8.734 14.904 C 7.727 14.904 7.468 14.315 6.306 14.315 C 5.173 14.315 4.77 14.923 3.85 14.923 C 2.929 14.923 2.286 14.073 1.547 13.028 C 0.691 11.801 0 9.895 0 8.086 C 0 5.185 1.871 3.646 3.713 3.646 C 4.692 3.646 5.508 4.294 6.122 4.294 C 6.707 4.294 7.619 3.607 8.733 3.607 C 9.155 3.607 10.671 3.646 11.669 5.088 Z M 8.204 2.379 C 8.664 1.828 8.99 1.064 8.99 0.3 C 8.99 0.194 8.981 0.087 8.962 0 C 8.213 0.028 7.322 0.503 6.784 1.131 C 6.362 1.615 5.968 2.379 5.968 3.154 C 5.968 3.27 5.988 3.386 5.996 3.424 C 6.044 3.433 6.121 3.443 6.198 3.443 C 6.87 3.443 7.715 2.989 8.204 2.379 Z" />
-    </svg>
-  );
-}
-
 export function Navbar() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeHref, setActiveHref] = useState("");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Track active section via IntersectionObserver — re-runs on every route change
+  useEffect(() => {
+    // Non-home pages: no active highlight
+    if (pathname !== "/") {
+      setActiveHref("");
+      return;
+    }
+
+    // Home page: start with Home active
+    setActiveHref(window.scrollY < 80 ? "/" : "");
+
+    const sectionIds = navLinks
+      .filter((l) => l.href.startsWith("/#"))
+      .map((l) => l.href.slice(2)); // "/#services" → "services"
+
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveHref(`/#${id}`);
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    const onScroll = () => {
+      if (window.scrollY < 80) setActiveHref("/");
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observers.forEach((o) => o.disconnect());
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [pathname]); // re-runs when route changes
 
   return (
     <header
@@ -193,7 +223,9 @@ export function Navbar() {
               className="hidden md:flex"
               style={{ flexDirection: "row", alignItems: "center", gap: 20 }}
             >
-              {navLinks.map((link) => (
+            {navLinks.map((link) => {
+                const isActive = activeHref === link.href;
+                return (
                 <a
                   key={link.href}
                   href={link.href}
@@ -201,24 +233,28 @@ export function Navbar() {
                     fontFamily:
                       '"Inter Display", "Inter", -apple-system, sans-serif',
                     fontSize: 14,
-                    fontWeight: 500,
+                    fontWeight: isActive ? 600 : 500,
                     letterSpacing: "-0.02em",
-                    color: "rgb(255,255,255)",
-                    opacity: 0.6,
+                    color: isActive ? "rgb(0,0,0)" : "rgb(255,255,255)",
+                    opacity: isActive ? 1 : 0.6,
                     textDecoration: "none",
                     whiteSpace: "nowrap",
-                    transition: "opacity 0.15s ease",
+                    transition: "opacity 0.15s ease, background 0.15s ease, color 0.15s ease",
+                    backgroundColor: isActive ? "rgb(255,255,255)" : "transparent",
+                    borderRadius: isActive ? 6 : 0,
+                    padding: isActive ? "4px 10px" : "4px 0",
                   }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget as HTMLElement).style.opacity = "1")
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget as HTMLElement).style.opacity = "0.6")
-                  }
+                  onMouseEnter={(e) => {
+                    if (!isActive) (e.currentTarget as HTMLElement).style.opacity = "1";
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) (e.currentTarget as HTMLElement).style.opacity = "0.6";
+                  }}
                 >
                   {link.label}
                 </a>
-              ))}
+                );
+              })}
             </div>
 
             {/* CTA button — white bg, black text, Apple icon, exactly like Supaste "Download" */}
@@ -315,7 +351,9 @@ export function Navbar() {
             border: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          {navLinks.map((link) => (
+          {navLinks.map((link) => {
+            const isActive = activeHref === link.href;
+            return (
             <a
               key={link.href}
               href={link.href}
@@ -326,27 +364,29 @@ export function Navbar() {
                 borderRadius: 10,
                 fontFamily: '"Inter Display", "Inter", -apple-system, sans-serif',
                 fontSize: 14,
-                fontWeight: 500,
-                color: "rgba(255,255,255,0.65)",
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? "rgb(255,255,255)" : "rgba(255,255,255,0.65)",
                 textDecoration: "none",
                 transition: "background 0.15s, color 0.15s",
+                backgroundColor: isActive ? "rgba(255,255,255,0.12)" : "transparent",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.backgroundColor =
-                  "rgba(255,255,255,0.06)";
-                (e.currentTarget as HTMLElement).style.color =
-                  "rgb(255,255,255)";
+                  isActive ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)";
+                (e.currentTarget as HTMLElement).style.color = "rgb(255,255,255)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.backgroundColor =
-                  "transparent";
-                (e.currentTarget as HTMLElement).style.color =
-                  "rgba(255,255,255,0.65)";
+                  isActive ? "rgba(255,255,255,0.12)" : "transparent";
+                (e.currentTarget as HTMLElement).style.color = isActive
+                  ? "rgb(255,255,255)"
+                  : "rgba(255,255,255,0.65)";
               }}
             >
               {link.label}
             </a>
-          ))}
+            );
+          })}
           <div
             style={{
               marginTop: 6,
