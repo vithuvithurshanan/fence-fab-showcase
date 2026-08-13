@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
-import { Fence, Phone, Menu, X } from "lucide-react";
+import { Phone, Menu, X } from "lucide-react";
+import logoImg from "@/assets/logo.webp";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -173,26 +174,12 @@ export function Navbar() {
               flexShrink: 0,
             }}
           >
-            {/* App icon — 30×30 rounded square with gradient */}
-            <span
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 8,
-                background:
-                  "linear-gradient(135deg, #5b9cf6 0%, #7b6cf6 50%, #e879b9 100%)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                boxShadow: "0 2px 10px rgba(91,156,246,0.45)",
-              }}
-            >
-              <Fence
-                style={{ width: 16, height: 16, color: "white" }}
-                strokeWidth={2.5}
-              />
-            </span>
+            {/* Logo image */}
+            <img
+              src={logoImg}
+              alt="Affordable Fence logo"
+              style={{ width: 34, height: 34, borderRadius: 8, objectFit: "contain", flexShrink: 0, backgroundColor: "white", padding: 3 }}
+            />
             {/* Brand name — Inter Display SemiBold, -0.02em tracking */}
             <span
               style={{

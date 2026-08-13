@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Fence, ArrowLeft, Phone, MapPin } from "lucide-react";
+import { ArrowLeft, Phone, MapPin } from "lucide-react";
+import logoImg from "@/assets/logo.webp";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -51,7 +52,7 @@ function PrivacyPage() {
           {/* Header */}
           <div className="mb-8 space-y-2">
             <span className="flex items-center gap-2 text-lg font-bold text-foreground">
-              <Fence className="size-5 text-primary" /> Affordable Fence
+              <img src={logoImg} alt="Affordable Fence logo" className="size-6 object-contain rounded bg-white p-0.5" /> Affordable Fence
             </span>
             <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
               Privacy Policy

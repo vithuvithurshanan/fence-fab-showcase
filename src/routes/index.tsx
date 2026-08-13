@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { ParallaxSection, Reveal } from "@/components/Parallax";
 import {
-  Fence,
   Hammer,
   Phone,
   Ruler,
@@ -24,6 +23,7 @@ import residentialImg from "@/assets/service-residential.jpg";
 import commercialImg from "@/assets/service-commercial.jpg";
 import diyImg from "@/assets/service-diy.jpg";
 import railingImg from "@/assets/service-railing.jpg";
+import logoImg from "@/assets/logo.webp";
 import contactImg from "@/assets/contact.jpeg";
 
 export const Route = createFileRoute("/")({
@@ -119,44 +119,68 @@ const promises = [
   { icon: Timer, title: "On schedule", copy: "We show up on the day we promised. Every time." },
   { icon: Truck, title: "Own crews", copy: "No subcontractors — our installers, our standards." },
 ];function ContactForm() {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
     const existing = document.querySelector(
       'script[src="https://link.kdlead.com/js/form_embed.js"]'
     );
     if (existing) existing.remove();
-
     const script = document.createElement("script");
     script.src = "https://link.kdlead.com/js/form_embed.js";
     script.async = true;
     document.body.appendChild(script);
-
     return () => {
       const s = document.querySelector(
         'script[src="https://link.kdlead.com/js/form_embed.js"]'
       );
       if (s) s.remove();
     };
-  }, []);
+  }, [visible]);
 
   return (
-    <div className="w-full rounded-xl bg-background p-4">
-      <iframe
-        src="https://link.kdlead.com/widget/form/Kh1FyIs2j9geLQbuwWxd"
-        style={{ width: "100%", height: "904px", border: "none", borderRadius: "8px" }}
-        id="inline-Kh1FyIs2j9geLQbuwWxd"
-        data-layout="{'id':'INLINE'}"
-        data-trigger-type="alwaysShow"
-        data-trigger-value=""
-        data-activation-type="alwaysActivated"
-        data-activation-value=""
-        data-deactivation-type="neverDeactivate"
-        data-deactivation-value=""
-        data-form-name="Affordable Fence"
-        data-height="904"
-        data-layout-iframe-id="inline-Kh1FyIs2j9geLQbuwWxd"
-        data-form-id="Kh1FyIs2j9geLQbuwWxd"
-        title="Affordable Fence"
-      />
+    <div ref={ref} className="w-full rounded-xl bg-background p-4">
+      {visible ? (
+        <iframe
+          src="https://link.kdlead.com/widget/form/Kh1FyIs2j9geLQbuwWxd"
+          style={{ width: "100%", height: "904px", border: "none", borderRadius: "8px" }}
+          id="inline-Kh1FyIs2j9geLQbuwWxd"
+          data-layout="{'id':'INLINE'}"
+          data-trigger-type="alwaysShow"
+          data-trigger-value=""
+          data-activation-type="alwaysActivated"
+          data-activation-value=""
+          data-deactivation-type="neverDeactivate"
+          data-deactivation-value=""
+          data-form-name="Affordable Fence"
+          data-height="904"
+          data-layout-iframe-id="inline-Kh1FyIs2j9geLQbuwWxd"
+          data-form-id="Kh1FyIs2j9geLQbuwWxd"
+          title="Affordable Fence"
+        />
+      ) : (
+        <div style={{ height: "904px" }} className="flex items-center justify-center text-muted-foreground text-sm">
+          Loading form…
+        </div>
+      )}
     </div>
   );
 }
@@ -173,7 +197,7 @@ function Index() {
         <div className="mx-auto max-w-3xl py-32 text-center">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-on-image/30 bg-on-image/10 px-4 py-1.5 text-xs font-medium tracking-[0.2em] text-on-image uppercase backdrop-blur-sm">
-              <Fence className="size-4" /> Licensed &amp; insured
+              <img src={logoImg} alt="Affordable Fence" width={16} height={16} className="size-4 object-contain rounded bg-white p-0.5" /> Licensed &amp; insured
             </span>
           </Reveal>
           <Reveal delay={100}>
@@ -421,6 +445,8 @@ function Index() {
                   alt="Affordable Fence team at work"
                   loading="lazy"
                   decoding="async"
+                  width={800}
+                  height={600}
                   className="w-full h-auto object-contain"
                 />
               </div>
@@ -525,7 +551,7 @@ function Index() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-muted-foreground sm:flex-row">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <span className="flex items-center gap-2 font-semibold text-foreground">
-              <Fence className="size-4 text-primary" /> Affordable Fence
+              <img src={logoImg} alt="Affordable Fence logo" width={24} height={24} className="size-6 object-contain rounded bg-white p-0.5" /> Affordable Fence
             </span>
             <span className="hidden sm:inline text-border">•</span>
             <span className="flex items-center gap-2">
